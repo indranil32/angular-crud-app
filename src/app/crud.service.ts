@@ -7,7 +7,7 @@ import { catchError } from 'rxjs/operators';
     providedIn: 'root'
 })
 export class CrudService {
-    private apiServer = "http://localhost:3000";
+    private apiServer = "http://localhost:3000/php-backend";
     httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
@@ -15,27 +15,27 @@ export class CrudService {
     constructor(private httpClient: HttpClient) { }
 
     create(item): Observable<any> {
-        return this.httpClient.post<any>(this.apiServer + '/items/', JSON.stringify(item), this.httpOptions)
+        return this.httpClient.post<any>(this.apiServer + '/create.php', JSON.stringify(item), this.httpOptions)
             .pipe(catchError(this.errorHandler));
     }
 
     getById(id): Observable<any> {
-        return this.httpClient.get<any>(this.apiServer + '/items/' + id)
+        return this.httpClient.get<any>(this.apiServer + '/read.php?id=' + id)
             .pipe(catchError(this.errorHandler));
     }
 
     getAll(): Observable<any[]> {
-        return this.httpClient.get<any[]>(this.apiServer + '/items/')
+        return this.httpClient.get<any[]>(this.apiServer + '/read.php')
             .pipe(catchError(this.errorHandler));
     }
 
     update(id, item): Observable<any> {
-        return this.httpClient.put<any>(this.apiServer + '/items/' + id, JSON.stringify(item), this.httpOptions)
+        return this.httpClient.put<any>(this.apiServer + '/update.php', JSON.stringify(item), this.httpOptions)
             .pipe(catchError(this.errorHandler));
     }
 
     delete(id): Observable<any> {
-        return this.httpClient.delete<any>(this.apiServer + '/items/' + id, this.httpOptions)
+        return this.httpClient.delete<any>(this.apiServer + '/delete.php?id=' +id, this.httpOptions)
             .pipe(catchError(this.errorHandler));
     }
 
